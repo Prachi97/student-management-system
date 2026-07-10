@@ -15,10 +15,10 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost("login")]
-    public IActionResult Login(LoginRequest request)
+    public async Task<IActionResult> Login(LoginRequest request)
     {
-        if (request.Username != "admin"
-            || request.Password != "password")
+        if (request.Username != "admin" ||
+            request.Password != "password")
         {
             return Unauthorized();
         }

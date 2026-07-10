@@ -1,46 +1,15 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using StudentManagement.DTOs;
 using StudentManagement.Models;
 using StudentManagement.Services;
-using StudentManagement.DTOs;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using StudentManagement.Authentication;
 
 namespace StudentManagement.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
 [Authorize]
-public class AuthController : ControllerBase
-{
-    private readonly JwtService _jwtService;
-
-    public AuthController(JwtService jwtService)
-    {
-        _jwtService = jwtService;
-    }
-
-    [HttpPost("login")]
-    public IActionResult Login(LoginRequest request)
-    {
-        if (request.Username != "admin"
-            || request.Password != "password")
-        {
-            return Unauthorized();
-        }
-
-        var token = _jwtService.GenerateToken(request.Username);
-
-        return Ok(new LoginResponse
-        {
-            Token = token
-        });
-    }
-}
-namespace StudentManagement.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
 public class StudentController : ControllerBase
 {
     private readonly IStudentService _studentService;
@@ -56,9 +25,9 @@ public class StudentController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetStudents()
+    public async Task<IActionResult> GetStudents()
     {
-        var students = _studentService.GetStudents();
+        var students = await _studentService.GetStudents();
 
         var response = _mapper.Map<List<StudentResponse>>(students);
 
@@ -66,9 +35,9 @@ public class StudentController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public IActionResult GetStudent(int id)
+    public async Task<IActionResult> GetStudent(int id)
     {
-        var student = _studentService.GetStudentById(id);
+        var student = await _studentService.GetStudentById(id);
 
         if (student == null)
             return NotFound();
@@ -77,15 +46,15 @@ public class StudentController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult AddStudent(CreateStudentRequest request)
+    public async Task<IActionResult> AddStudent(CreateStudentRequest request)
     {
         var student = _mapper.Map<Student>(request);
-        _studentService.AddStudent(student);
+        await _studentService.AddStudent(student);
         return CreatedAtAction(nameof(GetStudent), new { id = student.Id }, student);
     }
 
     [HttpPut("{id}")]
-    public IActionResult UpdateStudent(int id, UpdateStudentRequest request)
+    public async Task<IActionResult> UpdateStudent(int id, UpdateStudentRequest request)
     {
         var student = new Student
         {
@@ -96,15 +65,15 @@ public class StudentController : ControllerBase
             Age = request.Age
         };
 
-        _studentService.UpdateStudent(student);
+        await _studentService.UpdateStudent(student);
 
         return NoContent();
     }
 
     [HttpDelete("{id}")]
-    public IActionResult DeleteStudent(int id)
+    public async Task<IActionResult> DeleteStudent(int id)
     {
-        _studentService.DeleteStudent(id);
+        await _studentService.DeleteStudent(id);
 
         return NoContent();
     }

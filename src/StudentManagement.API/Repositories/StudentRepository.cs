@@ -13,36 +13,36 @@ public class StudentRepository : IStudentRepository
         _context = context;
     }
 
-    public List<Student> GetAll()
+    public async Task<List<Student>> GetAll()
     {
-        return _context.Students.ToList();
+        return await _context.Students.ToListAsync();
     }
 
-    public Student? GetById(int id)
+    public async Task<Student?> GetById(int id)
     {
-        return _context.Students.FirstOrDefault(s => s.Id == id);
+        return await _context.Students.FirstOrDefaultAsync(s => s.Id == id);
     }
 
-    public void Add(Student student)
+    public async Task Add(Student student)
     {
         _context.Students.Add(student);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Update(Student student)
+    public async Task Update(Student student)
     {
         _context.Students.Update(student);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 
-    public void Delete(int id)
+    public async Task Delete(int id)
     {
-        var student = _context.Students.FirstOrDefault(s => s.Id == id);
+        var student = await _context.Students.FirstOrDefaultAsync(s => s.Id == id);
 
         if (student == null)
             return;
 
         _context.Students.Remove(student);
-        _context.SaveChanges();
+        await _context.SaveChangesAsync();
     }
 }

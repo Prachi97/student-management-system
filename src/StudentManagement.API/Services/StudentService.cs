@@ -12,28 +12,28 @@ public class StudentService : IStudentService
         _repository = repository;
     }
 
-    public List<Student> GetStudents()
+    public async Task<List<Student>> GetStudents()
     {
-        return _repository.GetAll();
+        return await _repository.GetAll();
     }
 
-    public Student? GetStudentById(int id)
+    public async Task<Student?> GetStudentById(int id)
     {
-        return _repository.GetById(id);
+        return await _repository.GetById(id);
     }
 
-    public void AddStudent(Student student)
+    public async Task AddStudent(Student student)
     {
-        _repository.Add(student);
+        await _repository.Add(student);
     }
 
-    public void UpdateStudent(Student student)
+    public async Task UpdateStudent(Student student)
     {
-        _repository.Update(student);
+        await _repository.Update(student);
     }
 
-    public void DeleteStudent(int id)
+    public async Task DeleteStudent(int id)
     {
-        _repository.Delete(id);
+        await _repository.Delete(id);
     }
 }

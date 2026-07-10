@@ -4,13 +4,13 @@ namespace StudentManagement.Repositories;
 
 public interface IStudentRepository
 {
-    List<Student> GetAll();
+    Task<List<Student>> GetAll();
 
-    Student? GetById(int id);
+    Task<Student?> GetById(int id);
 
-    void Add(Student student);
+    Task Add(Student student);
 
-    void Update(Student student);
+    Task Update(Student student);
 
-    void Delete(int id);
+    Task Delete(int id);
 }

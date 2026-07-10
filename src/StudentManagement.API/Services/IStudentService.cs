@@ -4,13 +4,13 @@ namespace StudentManagement.Services;
 
 public interface IStudentService
 {
-    List<Student> GetStudents();
+    Task<List<Student>> GetStudents();
 
-    Student? GetStudentById(int id);
+    Task<Student?> GetStudentById(int id);
 
-    void AddStudent(Student student);
+    Task AddStudent(Student student);
 
-    void UpdateStudent(Student student);
+    Task UpdateStudent(Student student);
 
-    void DeleteStudent(int id);
+    Task DeleteStudent(int id);
 }

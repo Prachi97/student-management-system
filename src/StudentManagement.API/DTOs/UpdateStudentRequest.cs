@@ -1,11 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace StudentManagement.Models;
+namespace StudentManagement.DTOs;
 
-public class Student
+public class UpdateStudentRequest
 {
-    public int Id { get; set; }
-
     [Required]
     [StringLength(50)]
     public string FirstName { get; set; } = string.Empty;
@@ -18,6 +16,6 @@ public class Student
     [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
-    [Range(5, 100)]
+    [Range(5,100)]
     public int Age { get; set; }
 }

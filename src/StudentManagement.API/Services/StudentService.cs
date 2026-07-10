@@ -16,4 +16,24 @@ public class StudentService : IStudentService
     {
         return _repository.GetAll();
     }
+
+    public Student? GetStudentById(int id)
+    {
+        return _repository.GetById(id);
+    }
+
+    public void AddStudent(Student student)
+    {
+        _repository.Add(student);
+    }
+
+    public void UpdateStudent(Student student)
+    {
+        _repository.Update(student);
+    }
+
+    public void DeleteStudent(int id)
+    {
+        _repository.Delete(id);
+    }
 }

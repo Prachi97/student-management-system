@@ -1,5 +1,8 @@
 using StudentManagement.Repositories;
 using StudentManagement.Services;
+using Microsoft.EntityFrameworkCore;
+using StudentManagement.Data;
+using StudentManagement.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,10 +10,38 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
-
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    options.UseSqlite("Data Source=student.db"));
 builder.Services.AddScoped<IStudentRepository, StudentRepository>();
 builder.Services.AddScoped<IStudentService, StudentService>();
 var app = builder.Build();
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+    context.Database.EnsureCreated();
+
+    if (!context.Students.Any())
+    {
+        context.Students.AddRange(
+            new Student
+            {
+                FirstName = "Prachi",
+                LastName = "Mittal",
+                Email = "prachi@test.com",
+                Age = 28
+            },
+            new Student
+            {
+                FirstName = "John",
+                LastName = "Doe",
+                Email = "john@test.com",
+                Age = 22
+            });
+
+        context.SaveChanges();
+    }
+}
 app.MapControllers();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

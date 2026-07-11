@@ -28,3 +28,9 @@ jobs:
 
       - name: Publish Project
         run: dotnet publish src/StudentManagement.API --configuration Release --no-build --output ./publish
+
+      - name: Upload Publish Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: StudentManagement-Publish
+          path: publish
